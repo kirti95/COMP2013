@@ -111,10 +111,10 @@ namespace RemoveRedKinect
                 if (pixels[i] < 70)
                 {
                     int loc = i;
-                    newPixals[loc - 2] = 255;
-                    newPixals[loc - 1] = 255;
-                    newPixals[loc] = 255;
-                    newPixals[loc + 1] = 0;
+                    newPixals[loc - 2] = pixels[i - 2];
+                    newPixals[loc - 1] = pixels[i - 1];
+                    newPixals[loc] = pixels[i];
+                    newPixals[loc + 1] = pixels[i + 1];
                 }
             }
         }
