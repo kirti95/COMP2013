@@ -68,7 +68,7 @@ namespace ConsoleApplication3
             image.WritePixels(new Int32Rect(0, 0, image.PixelWidth, image.PixelHeight), newPixels, image.PixelWidth, 0);
             BitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(image));
-            string savePath = "C:\\Users\\Tom\\Documents\\University\\Second Year\\COMP2013\\KinectRedReduced.png";
+            string savePath = "C:\\Users\\Tom\\Documents\\University\\Second Year\\COMP2013\\KinectMonochrome.png";
             try
             {
                 using (FileStream fs = new FileStream(savePath, FileMode.Create))
