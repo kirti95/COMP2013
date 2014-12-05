@@ -1,0 +1,15 @@
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\bin\AnyCPU\Debug\DepthBasics-WPF.exe.config
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\bin\AnyCPU\Debug\DepthBasics-WPF.exe
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\bin\AnyCPU\Debug\DepthBasics-WPF.pdb
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\bin\AnyCPU\Debug\Microsoft.Kinect.dll
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\bin\AnyCPU\Debug\Microsoft.Kinect.xml
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\DepthBasics-WPF.csprojResolveAssemblyReference.cache
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\MainWindow.baml
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\MainWindow.g.cs
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\App.g.cs
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\DepthBasics-WPF_MarkupCompile.cache
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\DepthBasics-WPF.g.resources
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\Microsoft.Samples.Kinect.DepthBasics.Properties.Resources.resources
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\DepthBasics-WPF.csproj.GenerateResource.Cache
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\DepthBasics-WPF.exe
+C:\Users\Tom\Documents\Programs\Depth Program\DepthBasics-WPF\obj\Debug\DepthBasics-WPF.pdb
