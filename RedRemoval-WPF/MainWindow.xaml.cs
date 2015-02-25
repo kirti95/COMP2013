@@ -28,9 +28,8 @@ namespace Microsoft.Samples.Kinect.ColorBasics
         /// <summary>
         /// Reader for color frames
         /// </summary>
-        private ColorFrameReader colorFrameReader = null;
+        private MultiSourceFrameReader multiFrameReader = null;
 
-        private int frameNum = 0;
 
         /// <summary>
         /// Bitmap to display
@@ -42,6 +41,9 @@ namespace Microsoft.Samples.Kinect.ColorBasics
         /// </summary>
         private string statusText = null;
 
+        private DepthSpacePoint[] depthMappedToColorPoints = null;
+        private int i = 0;
+
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
@@ -51,10 +53,10 @@ namespace Microsoft.Samples.Kinect.ColorBasics
             this.kinectSensor = KinectSensor.GetDefault();
 
             // open the reader for the color frames
-            this.colorFrameReader = this.kinectSensor.ColorFrameSource.OpenReader();
+            this.multiFrameReader = this.kinectSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Depth);
 
             // wire handler for frame arrival
-            this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
+            this.multiFrameReader.MultiSourceFrameArrived += this.multiFrameReader_MultiSourceFrameArrived;
 
             // create the colorFrameDescription from the ColorFrameSource using Bgra format
             FrameDescription colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
@@ -78,6 +80,60 @@ namespace Microsoft.Samples.Kinect.ColorBasics
             // initialize the components (controls) of the window
             this.InitializeComponent();
         }
+
+        void multiFrameReader_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
+        {
+            MultiSourceFrame multiFrame = e.FrameReference.AcquireFrame();
+            Console.Out.WriteLine("Frame Arrived");
+            if (multiFrame != null)
+            {
+                ColorFrame colorFrame = multiFrame.ColorFrameReference.AcquireFrame();
+                DepthFrame depthFrame = multiFrame.DepthFrameReference.AcquireFrame();
+                FrameDescription colorFrameDescription = colorFrame.FrameDescription;
+                FrameDescription depthFrameDescription = depthFrame.FrameDescription;
+                int depthWidth = depthFrameDescription.Width;
+                int depthHeight = depthFrameDescription.Height;
+                byte[] pixels = new byte[colorFrameDescription.Width * colorFrameDescription.Height * 4];
+                ushort[] depthPixels = new ushort[depthFrameDescription.Width * depthFrameDescription.Height];
+                colorFrame.CopyConvertedFrameDataToArray(pixels, ColorImageFormat.Bgra);
+                depthFrame.CopyFrameDataToArray(depthPixels);
+                byte[] newPixels = new byte[colorFrameDescription.Width * colorFrameDescription.Height * 4];
+                byte[] edges = new byte[colorFrameDescription.Width * colorFrameDescription.Height * 4];
+                CoordinateMapper coordinateMapper = this.kinectSensor.CoordinateMapper;
+                this.depthMappedToColorPoints = new DepthSpacePoint[colorFrameDescription.Width * colorFrameDescription.Height];
+                KinectBuffer colorFrameData = colorFrame.LockRawImageBuffer();
+                coordinateMapper.MapColorFrameToDepthSpace(depthPixels, depthMappedToColorPoints);
+                removeRed(pixels, newPixels, (uint)(colorFrameDescription.Width * colorFrameDescription.Height * 4));
+                findEdge(newPixels, edges, depthMappedToColorPoints,depthFrameDescription.Width,depthPixels);
+                colorBitmap.WritePixels(new Int32Rect(0, 0, this.colorBitmap.PixelWidth, this.colorBitmap.PixelHeight), edges, colorBitmap.PixelWidth * 4, 0);
+                for(int i=0;i<depthPixels.Length;i++){
+                    depthPixels[i] *= 22;
+                }
+                //saving images
+                WriteableBitmap image = new WriteableBitmap(depthFrameDescription.Width, depthFrameDescription.Height, 96.0, 96.0, PixelFormats.Gray16, null);
+                image.WritePixels(new Int32Rect(0, 0, image.PixelWidth, image.PixelHeight), depthPixels, image.PixelWidth*2, 0);
+                BitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(image));
+                string time = System.DateTime.UtcNow.ToString("hh'-'mm'-'ss", CultureInfo.CurrentUICulture.DateTimeFormat);
+                string myPhotos = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                string path = Path.Combine(myPhotos + "/KinectPics", "KinectScreenshot-Depth-" + time + ".png");
+                try
+                {
+                    using (FileStream fs = new FileStream(path, FileMode.Create))
+                    {
+                        encoder.Save(fs);
+                    }
+                    Console.WriteLine("Saved");
+                }
+                catch (IOException)
+                {
+                    Console.WriteLine("Did not save");
+                }
+            }
+        }
+                
+    
+        
 
         /// <summary>
         /// INotifyPropertyChangedPropertyChanged event to allow window controls to bind to changeable data
@@ -127,11 +183,11 @@ namespace Microsoft.Samples.Kinect.ColorBasics
         /// <param name="e">event arguments</param>
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (this.colorFrameReader != null)
+            if (this.multiFrameReader != null)
             {
                 // ColorFrameReder is IDisposable
-                this.colorFrameReader.Dispose();
-                this.colorFrameReader = null;
+                this.multiFrameReader.Dispose();
+                this.multiFrameReader = null;
             }
 
             if (this.kinectSensor != null)
@@ -141,83 +197,7 @@ namespace Microsoft.Samples.Kinect.ColorBasics
             }
         }
 
-        /// <summary>
-        /// Handles the user clicking on the screenshot button
-        /// </summary>
-        /// <param name="sender">object sending the event</param>
-        /// <param name="e">event arguments</param>
-        private void ScreenshotButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.colorBitmap != null)
-            {
-                // create a png bitmap encoder which knows how to save a .png file
-                BitmapEncoder encoder = new PngBitmapEncoder();
 
-                // create frame from the writable bitmap and add to encoder
-                encoder.Frames.Add(BitmapFrame.Create(this.colorBitmap));
-
-                string time = System.DateTime.Now.ToString("hh'-'mm'-'ss", CultureInfo.CurrentUICulture.DateTimeFormat);
-
-                string myPhotos = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-
-                string path = Path.Combine(myPhotos, "KinectScreenshot-Color-" + time + ".png");
-
-                // write the new file to disk
-                try
-                {
-                    // FileStream is IDisposable
-                    using (FileStream fs = new FileStream(path, FileMode.Create))
-                    {
-                        encoder.Save(fs);
-                    }
-
-                    this.StatusText = string.Format(Properties.Resources.SavedScreenshotStatusTextFormat, path);
-                }
-                catch (IOException)
-                {
-                    this.StatusText = string.Format(Properties.Resources.FailedScreenshotStatusTextFormat, path);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Handles the color frame data arriving from the sensor
-        /// </summary>
-        /// <param name="sender">object sending the event</param>
-        /// <param name="e">event arguments</param>
-        private void Reader_ColorFrameArrived(object sender, ColorFrameArrivedEventArgs e)
-        {
-            // ColorFrame is IDisposable
-            frameNum++;
-            using (ColorFrame colorFrame = e.FrameReference.AcquireFrame())
-            {
-                if ((colorFrame != null)&&(frameNum % 2 == 0))
-                {
-                    FrameDescription colorFrameDescription = colorFrame.FrameDescription;
-
-                    using (KinectBuffer colorBuffer = colorFrame.LockRawImageBuffer())
-                    {
-                        this.colorBitmap.Lock();
-                        if ((colorFrameDescription.Width == this.colorBitmap.PixelWidth) && (colorFrameDescription.Height == this.colorBitmap.PixelHeight))
-                        {
-                            colorFrame.CopyConvertedFrameDataToIntPtr(
-                                this.colorBitmap.BackBuffer,
-                                (uint)(colorFrameDescription.Width * colorFrameDescription.Height * 4),
-                                ColorImageFormat.Bgra);
-
-                            this.colorBitmap.AddDirtyRect(new Int32Rect(0, 0, this.colorBitmap.PixelWidth, this.colorBitmap.PixelHeight));
-                        }
-
-                        this.colorBitmap.Unlock();
-                        byte[] pixels = new byte[colorFrameDescription.Width * colorFrameDescription.Height * 4];
-                        byte[] newPixels = new byte[colorFrameDescription.Width * colorFrameDescription.Height * 4];
-                        colorBitmap.CopyPixels(pixels, colorBitmap.PixelWidth * 4, 0);
-                        removeRed(pixels, newPixels,(uint)(colorFrameDescription.Width * colorFrameDescription.Height * 4));
-                        colorBitmap.WritePixels(new Int32Rect(0, 0, this.colorBitmap.PixelWidth, this.colorBitmap.PixelHeight), newPixels, colorBitmap.PixelWidth * 4, 0);
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// Handles the event which the sensor becomes unavailable (E.g. paused, closed, unplugged).
@@ -231,12 +211,76 @@ namespace Microsoft.Samples.Kinect.ColorBasics
                                                             : Properties.Resources.SensorNotAvailableStatusText;
         }
 
+        private static void drawPixel(byte[] edges, int i)
+        {
+            edges[i] = 255;
+            edges[i + 1] = 255;
+            edges[i + 2] = 255;
+            edges[i + 3] = 255;
+        }
+
+        private int findProximity(DepthSpacePoint[] depthMappedToColorPoints, int index, int depthWidth, ushort[] depthPixels)
+        {
+            int i=1;
+            /*while(Double.IsInfinity(depthMappedToColorPoints[index].X)){
+                if ((index >= depthMappedToColorPoints.Length)||index ==0 || i>20) return 10000;
+                index+=i;
+                i++;
+                i*=-1;//add 1 then minus 2 (so -1 from original) and so on until closest valid point
+            }*/
+            if (Double.IsInfinity(depthMappedToColorPoints[index].X)) return 9999;
+            int depthIndex = (int)depthMappedToColorPoints[index].X + (int)depthMappedToColorPoints[index].Y * depthWidth;
+            int max = Math.Abs(depthPixels[depthIndex] - depthPixels[depthIndex-2]);
+            if (Math.Abs(depthPixels[depthIndex] - depthPixels[depthIndex + 2]) > max) max = Math.Abs(depthPixels[depthIndex] - depthPixels[depthIndex + 2]);
+            return max;
+        }
+
+        private void findEdge(byte[] pixels, byte[] edges, DepthSpacePoint[] depthMappedToColorPoints,int depthWidth, ushort[] depthPixels)
+        {
+            Boolean redSection = false;
+            Console.Out.WriteLine("Finding Edges...");
+            int j = 0;
+            int mindist = 10000;
+            int minI = 0;
+            int dist = 0;
+            for (int i = 0; i < pixels.Length/4; i ++)
+            {
+                j = i * 4;
+                if (!redSection)
+                {
+                    if ((pixels[j] == 0) && (pixels[j + 1] == 0) && (pixels[j + 2] == 0) && (pixels[j + 3] == 0))
+                    {
+                        if (!(i==0)) drawPixel(edges, j - 4);
+                        dist = findProximity(depthMappedToColorPoints, i,depthWidth,depthPixels);
+                        if (dist < mindist) mindist = dist;
+                        redSection = true;
+                    }
+                }
+                else
+                {
+                    if (!((pixels[j] == 0) && (pixels[j + 1] == 0) && (pixels[j + 2] == 0) && (pixels[j + 3] == 0)))
+                    {
+                        drawPixel(edges, j);
+                        dist = findProximity(depthMappedToColorPoints, i, depthWidth,depthPixels);
+                        if (dist < mindist)
+                        {
+                            mindist = dist;
+                            minI = i;
+                        }
+                        redSection = false;
+                    }
+                }
+            }
+            Console.WriteLine(mindist);
+            Console.WriteLine(depthMappedToColorPoints[minI].X + " " + depthMappedToColorPoints[minI].Y);
+        }
+
         private void removeRed(byte[] pixels, byte[] newPixals, uint size)
         {
             for (int i = 2; i < size; i = i + 4)
             {
-                
-                if (pixels[i] < 100)
+
+                if ((pixels[i] - pixels[i-1]) < 0)
                 {
                     int loc = i;
                     newPixals[loc - 2] = pixels[i - 2];
