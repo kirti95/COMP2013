@@ -1,0 +1,15 @@
+D:\Mapping-WPF\Mapping-WPF\bin\Debug\Mapping-WPF.exe.config
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\Mapping-WPF.csprojResolveAssemblyReference.cache
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\MainWindow.baml
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\MainWindow.g.cs
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\App.g.cs
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\Mapping-WPF_MarkupCompile.cache
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\Mapping-WPF.g.resources
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\Mapping_WPF.Properties.Resources.resources
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\Mapping-WPF.csproj.GenerateResource.Cache
+D:\Mapping-WPF\Mapping-WPF\bin\Debug\Mapping-WPF.exe
+D:\Mapping-WPF\Mapping-WPF\bin\Debug\Mapping-WPF.pdb
+D:\Mapping-WPF\Mapping-WPF\bin\Debug\Microsoft.Kinect.dll
+D:\Mapping-WPF\Mapping-WPF\bin\Debug\Microsoft.Kinect.xml
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\Mapping-WPF.exe
+D:\Mapping-WPF\Mapping-WPF\obj\Debug\Mapping-WPF.pdb

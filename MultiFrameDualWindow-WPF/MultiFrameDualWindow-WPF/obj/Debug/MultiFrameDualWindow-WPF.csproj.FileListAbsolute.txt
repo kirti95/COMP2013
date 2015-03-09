@@ -1,0 +1,15 @@
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\bin\Debug\MultiFrameDualWindow-WPF.exe.config
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\MultiFrameDualWindow-WPF.csprojResolveAssemblyReference.cache
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\MainWindow.baml
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\MainWindow.g.cs
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\App.g.cs
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\MultiFrameDualWindow-WPF_MarkupCompile.cache
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\MultiFrameDualWindow-WPF.g.resources
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\MultiFrameDualWindow_WPF.Properties.Resources.resources
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\MultiFrameDualWindow-WPF.csproj.GenerateResource.Cache
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\bin\Debug\MultiFrameDualWindow-WPF.exe
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\bin\Debug\MultiFrameDualWindow-WPF.pdb
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\bin\Debug\Microsoft.Kinect.dll
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\bin\Debug\Microsoft.Kinect.xml
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\MultiFrameDualWindow-WPF.exe
+D:\MultiFrameDualWindow-WPF\MultiFrameDualWindow-WPF\obj\Debug\MultiFrameDualWindow-WPF.pdb

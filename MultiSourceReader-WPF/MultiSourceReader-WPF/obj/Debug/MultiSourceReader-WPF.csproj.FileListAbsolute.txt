@@ -1,0 +1,15 @@
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\bin\Debug\MultiSourceReader-WPF.exe.config
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\MultiSourceReader-WPF.csprojResolveAssemblyReference.cache
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\MainWindow.baml
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\MainWindow.g.cs
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\App.g.cs
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\MultiSourceReader-WPF_MarkupCompile.cache
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\MultiSourceReader-WPF.g.resources
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\MultiSourceReader_WPF.Properties.Resources.resources
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\MultiSourceReader-WPF.csproj.GenerateResource.Cache
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\bin\Debug\MultiSourceReader-WPF.exe
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\bin\Debug\MultiSourceReader-WPF.pdb
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\bin\Debug\Microsoft.Kinect.dll
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\bin\Debug\Microsoft.Kinect.xml
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\MultiSourceReader-WPF.exe
+D:\MultiSourceReader-WPF\MultiSourceReader-WPF\obj\Debug\MultiSourceReader-WPF.pdb
