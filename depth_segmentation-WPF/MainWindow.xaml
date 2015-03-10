@@ -1,0 +1,11 @@
+﻿<Window x:Class="Mapping_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525" Closing="Window_Closing">
+    <Grid>
+        <Viewbox HorizontalAlignment="Left" Height="299" Margin="10,10,0,0" VerticalAlignment="Top" Width="497">
+            <Image Height="79" Width="132" Source="{Binding ImageSource}"/>
+        </Viewbox>
+
+    </Grid>
+</Window>
